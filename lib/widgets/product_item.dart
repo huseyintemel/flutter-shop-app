@@ -6,7 +6,7 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final product = Provider.of<Product>(context);
+    final product = Provider.of<Product>(context,listen: false); //widget not rebuilded every time when icon clicked
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: GridTile(
@@ -19,12 +19,16 @@ class ProductItem extends StatelessWidget {
         footer: GridTileBar(
           backgroundColor: Colors.black87,
           title: Text(product.title,textAlign: TextAlign.center,),
-          leading : IconButton(
-            icon: product.isFavorite ? const Icon(Icons.favorite,) : const Icon(Icons.favorite_border),
-            color: Colors.red,
-            onPressed:(){
-              product.toogleFavoriteStatus();
-            },
+          leading : Consumer<Product>(
+            builder: (context,product,child){
+              return IconButton(
+              icon: product.isFavorite ? const Icon(Icons.favorite,) : const Icon(Icons.favorite_border),
+              color: Colors.red,
+              onPressed:(){
+                product.toogleFavoriteStatus();
+              },
+            );
+            }
           ),
           trailing: const IconButton(icon: Icon(Icons.shopping_cart,), onPressed: null,color: Colors.red),
         ),
