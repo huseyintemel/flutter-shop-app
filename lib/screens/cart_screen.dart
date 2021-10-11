@@ -24,7 +24,7 @@ class CartScreen extends StatelessWidget {
                 children: <Widget>[
                   const Text('Total',style: TextStyle(fontSize: 24),),
                   const Spacer(),
-                  Chip(label: Text('\$${cart.totalAmount}'),backgroundColor: Theme.of(context).primaryColor,),
+                  Chip(label: Text('\$${cart.totalAmount.toStringAsFixed(2)}'),backgroundColor: Theme.of(context).primaryColor,),
                   TextButton(child: const Text('ORDER NOW'),onPressed:(){
                     Provider.of<Orders>(context,listen: false).addOrder(cart.items.values.toList(), cart.totalAmount);
                     cart.clear();
