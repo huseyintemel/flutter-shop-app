@@ -5,6 +5,7 @@ import 'dart:convert';
 
 class Products with ChangeNotifier{
   List<Product> items = [
+    /*
     Product(
       id: 'p1',
       title: 'Red Shirt',
@@ -37,6 +38,7 @@ class Products with ChangeNotifier{
       imageUrl:
           'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Cast-Iron-Pan.jpg/1024px-Cast-Iron-Pan.jpg',
     ),
+    */
   ];
 
   List<Product> get allItems{
@@ -79,6 +81,32 @@ class Products with ChangeNotifier{
   void deleteProduct(String id){
     items.removeWhere((prod) => prod.id == id);
     notifyListeners();
+  }
+
+  Future<void> getProducts() async{
+    final url = Uri.https('flutter-app-3330c-default-rtdb.firebaseio.com','/products.json');
+
+    try {
+      final response = await http.get(url);
+      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      final List<Product> loadedProducts = [];
+      extractedData.forEach((prodId, prodData) {
+        loadedProducts.add(
+          Product(
+           id: prodId,
+           title: prodData['title'],
+           description: prodData['description'],
+           imageUrl: prodData['imageUrl'],
+           price: prodData['price'],
+           isFavorite: prodData['isFavorite']
+          ));
+      });
+      items = loadedProducts;
+      notifyListeners();
+    } catch (e) {
+      print(e);
+    }
+
   }
 
 }
