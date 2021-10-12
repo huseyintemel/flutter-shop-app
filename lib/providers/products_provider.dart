@@ -51,9 +51,9 @@ class Products with ChangeNotifier{
     return items.firstWhere((product)=>product.id == id);
   }
 
-    void addProduct(Product product){
+    Future<void> ?addProduct(Product product){
       final url = Uri.https('flutter-app-3330c-default-rtdb.firebaseio.com','/products.json');
-      http.post(url,body: json.encode({
+      return http.post(url,body: json.encode({
         'title' : product.title,
         'description' : product.description,
         'imageUrl' : product.imageUrl,

@@ -20,6 +20,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     var initValues = {'title': '', 'description': '', 'price' : '', 'imageUrl' : '' };
 
     var isInit = true;
+    var isLoading = false;
 
     @override
     void initState() {
@@ -50,15 +51,24 @@ class _EditProductScreenState extends State<EditProductScreen> {
         return;
       }
       form.currentState?.save();
-
+      setState(() {
+        isLoading = true;
+      });
       if(editedProduct.id != ''){
         Provider.of<Products>(context,listen: false).updateProduct(editedProduct.id,editedProduct);
-        print(editedProduct.id,);
+        Navigator.of(context).pop();
+        setState(() {
+          isLoading = false;
+        });
       }
       else if(editedProduct.id == ''){
-        Provider.of<Products>(context,listen: false).addProduct(editedProduct);
+        Provider.of<Products>(context,listen: false).addProduct(editedProduct)?.then((_){
+          Navigator.of(context).pop();
+          setState(() {
+            isLoading = false;
+          });
+        });
       }
-      Navigator.of(context).pop();
     }
 
     @override
@@ -89,7 +99,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
           saveForm();
         },)
       ],),
-      body: Padding(
+      body: isLoading ? const Center(child: CircularProgressIndicator(),) : Padding(
         padding: const EdgeInsets.all(16),
         child: Form(
           key: form,
