@@ -49,7 +49,10 @@ class Products with ChangeNotifier{
     return items.firstWhere((product)=>product.id == id);
   }
 
-  void addProduct(){
+  void addProduct(Product product){
+    final newProduct = Product(id: DateTime.now().toString(), title: product.title, description: product.description, price: product.price, imageUrl: product.imageUrl);
+    items.add(newProduct);
+    
     notifyListeners();
   }
 
