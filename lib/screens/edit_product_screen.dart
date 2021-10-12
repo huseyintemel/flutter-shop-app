@@ -50,10 +50,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
         return;
       }
       form.currentState?.save();
-      if(editedProduct.id != null){
+
+      if(editedProduct.id != ''){
         Provider.of<Products>(context,listen: false).updateProduct(editedProduct.id,editedProduct);
+        print(editedProduct.id,);
       }
-      else{
+      else if(editedProduct.id == ''){
         Provider.of<Products>(context,listen: false).addProduct(editedProduct);
       }
       Navigator.of(context).pop();
