@@ -52,7 +52,15 @@ class Products with ChangeNotifier{
   void addProduct(Product product){
     final newProduct = Product(id: DateTime.now().toString(), title: product.title, description: product.description, price: product.price, imageUrl: product.imageUrl);
     items.add(newProduct);
-    
+
+    notifyListeners();
+  }
+
+  void updateProduct(String id, Product newProduct){
+    final prodIndex = items.indexWhere((prod) => prod.id == id);
+    if(prodIndex >= 0){
+      items[prodIndex] = newProduct;
+    }
     notifyListeners();
   }
 
