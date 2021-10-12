@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_shop_app/providers/products_provider.dart';
 import 'package:flutter_shop_app/screens/edit_product_screen.dart';
+import 'package:flutter_shop_app/widgets/alert.dart';
 import 'package:provider/provider.dart';
 
 class UserProductItem extends StatelessWidget {
@@ -23,7 +24,20 @@ class UserProductItem extends StatelessWidget {
               Navigator.of(context).pushNamed(EditProductScreen.routeName,arguments: id);
             },),
             IconButton(icon: Icon(Icons.delete,color: Theme.of(context).errorColor,),onPressed: (){
-              Provider.of<Products>(context,listen: false).deleteProduct(id);
+              showDialog(context: context, builder: (ctx){
+                return Alert(
+                  ctx: ctx, 
+                  title: 'Are you sure?', 
+                  content: 'Do you want to remove item from your products?', 
+                  rejectHandler: (){
+                    Navigator.of(ctx).pop(false);
+                  }, 
+                  acceptHandler: (){
+                    Provider.of<Products>(context,listen: false).deleteProduct(id);
+                    Navigator.of(ctx).pop(true);
+                  }
+                );
+              });
             },),
           ],
         ),
