@@ -55,7 +55,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
         isLoading = true;
       });
       if(editedProduct.id != ''){
-        Provider.of<Products>(context,listen: false).updateProduct(editedProduct.id,editedProduct);
+        await Provider.of<Products>(context,listen: false).updateProduct(editedProduct.id,editedProduct);
         Navigator.of(context).pop();
         setState(() {
           isLoading = false;
