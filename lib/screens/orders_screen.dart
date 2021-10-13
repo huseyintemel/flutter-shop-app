@@ -4,8 +4,19 @@ import 'package:flutter_shop_app/widgets/app_drawer.dart';
 import 'package:flutter_shop_app/widgets/order_item.dart';
 import 'package:provider/provider.dart';
 
-class OrdersScreen extends StatelessWidget {
+class OrdersScreen extends StatefulWidget {
   static const routeName = '/orders';
+
+  @override
+  State<OrdersScreen> createState() => _OrdersScreenState();
+}
+
+class _OrdersScreenState extends State<OrdersScreen> {
+  @override
+  void initState() {
+    Provider.of<Orders>(context, listen: false).getOrders();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     final ordersData = Provider.of<Orders>(context);
