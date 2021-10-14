@@ -4,8 +4,22 @@ import 'dart:convert';
 
 class Auth with ChangeNotifier{
   String? token;
-  String? email;
-  String? password;
+  String? userId;
+  DateTime? expiryDate ;
+
+  bool get isAuth {
+    return getToken == null ? false : true;
+  }
+
+  String? get getToken {
+    if (expiryDate != null &&
+        expiryDate!.isAfter(DateTime.now()) &&
+        token != null) {
+      return token!;
+    }
+    return null;
+  }
+
 
   Future<void> authanticate(String email,String password,String segmentName) async{
       var params = {
@@ -17,7 +31,11 @@ class Auth with ChangeNotifier{
         'password' : password,
         'returnSecureToken' : true,
       }));
-      print(json.decode(response.body));
+    final responseData = json.decode(response.body);
+    token = responseData['idToken'];
+    userId = responseData['localId'];
+    expiryDate = DateTime.now().add(Duration(seconds: int.parse(responseData['expiresIn'])));
+    notifyListeners();
   }
 
   Future<void> signUp(String email,String password) async{
