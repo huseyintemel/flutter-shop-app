@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_shop_app/providers/auth.dart';
 import 'package:flutter_shop_app/providers/cart.dart';
 import 'package:flutter_shop_app/providers/product.dart';
 import 'package:provider/provider.dart';
@@ -9,6 +10,7 @@ class ProductItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final product = Provider.of<Product>(context,listen: false); //widget not rebuilded every time when icon clicked
     final cart = Provider.of<Cart>(context, listen: false);
+    final authData = Provider.of<Auth>(context,listen: false).token as String;
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
@@ -28,7 +30,7 @@ class ProductItem extends StatelessWidget {
               icon: product.isFavorite ? const Icon(Icons.favorite,) : const Icon(Icons.favorite_border),
               color: Colors.red,
               onPressed:(){
-                product.toogleFavoriteStatus();
+                product.toogleFavoriteStatus(authData);
               },
             );
             }

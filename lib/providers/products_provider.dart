@@ -41,6 +41,10 @@ class Products with ChangeNotifier{
     */
   ];
 
+  final String authToken;
+
+  Products(this.authToken,this.items);
+
   List<Product> get allItems{
     return [...items];
   }
@@ -54,7 +58,11 @@ class Products with ChangeNotifier{
   }
 
     Future<void> ?addProduct(Product product) async {
-      final url = Uri.https('flutter-app-3330c-default-rtdb.firebaseio.com','/products.json');
+      var params = {
+        'auth': authToken,
+      };
+
+      final url = Uri.https('flutter-app-3330c-default-rtdb.firebaseio.com','/products.json',params);
       final response = await http.post(url,
         body: json.encode({
           'title' : product.title,
@@ -71,9 +79,12 @@ class Products with ChangeNotifier{
     }
 
   Future<void> updateProduct(String id, Product newProduct) async{
+    var params = {
+        'auth': authToken,
+    };
     final prodIndex = items.indexWhere((prod) => prod.id == id);
     if(prodIndex >= 0){
-      final url = Uri.https('flutter-app-3330c-default-rtdb.firebaseio.com','/products/$id.json');
+      final url = Uri.https('flutter-app-3330c-default-rtdb.firebaseio.com','/products/$id.json',params);
       await http.patch(url,body: json.encode({
         'title' : newProduct.title,
         'description' : newProduct.description,
@@ -87,7 +98,11 @@ class Products with ChangeNotifier{
   }
 
   Future<void> deleteProduct(String id) async{
-    final url = Uri.https('flutter-app-3330c-default-rtdb.firebaseio.com','/products/$id.json');
+    var params = {
+        'auth': authToken,
+    };
+
+    final url = Uri.https('flutter-app-3330c-default-rtdb.firebaseio.com','/products/$id.json',params);
     var response  = await http.delete(url);
 
     items.removeWhere((prod) => prod.id == id);
@@ -95,7 +110,10 @@ class Products with ChangeNotifier{
   }
 
   Future<void> getProducts() async{
-    final url = Uri.https('flutter-app-3330c-default-rtdb.firebaseio.com','/products.json');
+    var params = {
+        'auth': authToken,
+    };
+    final url = Uri.https('flutter-app-3330c-default-rtdb.firebaseio.com','/products.json',params);
 
     try {
       final response = await http.get(url);

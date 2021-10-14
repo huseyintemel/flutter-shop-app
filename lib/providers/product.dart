@@ -20,9 +20,12 @@ class Product with ChangeNotifier{
     
   });
   
-  void toogleFavoriteStatus(){
+  void toogleFavoriteStatus(String token){
+    var params = {
+        'auth': token,
+    };
     isFavorite = !isFavorite;
-    final url = Uri.https('flutter-app-3330c-default-rtdb.firebaseio.com','/products/$id.json');
+    final url = Uri.https('flutter-app-3330c-default-rtdb.firebaseio.com','/products/$id.json',params);
     http.patch(url,body: json.encode({
       'isFavorite' : isFavorite,
     }));
