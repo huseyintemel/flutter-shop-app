@@ -15,9 +15,9 @@ class ProductDetailPage extends StatelessWidget {
       body: Column(
         children: [
           Container(
-            height: 200,
+            height: 250,
             width: double.infinity,
-            child: Image.network(loadedProduct.imageUrl,fit: BoxFit.cover,),
+            child: Hero(tag: loadedProduct.id,child: Image.network(loadedProduct.imageUrl,fit: BoxFit.cover,)),
           ),
           const SizedBox(height: 10,),
           Text('\$${loadedProduct.price}',style: const TextStyle(fontSize: 24,color: Colors.grey),),
