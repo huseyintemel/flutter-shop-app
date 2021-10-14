@@ -70,6 +70,7 @@ class Products with ChangeNotifier{
           'description' : product.description,
           'imageUrl' : product.imageUrl,
           'price' : product.price,
+          'creatorId' : userId,
         }),
       );
       final newProduct = Product(id: json.decode(response.body)['name'], title: product.title, description: product.description, price: product.price, imageUrl: product.imageUrl);
@@ -112,6 +113,8 @@ class Products with ChangeNotifier{
   Future<void> getProducts() async{
     var params = {
         'auth': authToken,
+        'orderBy': '"creatorId"',
+        'equalTo': '"$userId"',
     };
     var url = Uri.https('flutter-app-3330c-default-rtdb.firebaseio.com','/products.json',params);
 
