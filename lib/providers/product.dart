@@ -20,15 +20,15 @@ class Product with ChangeNotifier{
     
   });
   
-  void toogleFavoriteStatus(String token){
+  void toogleFavoriteStatus(String token,String userId){
     var params = {
         'auth': token,
     };
     isFavorite = !isFavorite;
-    final url = Uri.https('flutter-app-3330c-default-rtdb.firebaseio.com','/products/$id.json',params);
-    http.patch(url,body: json.encode({
-      'isFavorite' : isFavorite,
-    }));
+    final url = Uri.https('flutter-app-3330c-default-rtdb.firebaseio.com','/userFavorites/$userId/$id.json',params);
+    http.put(url,body: json.encode(
+     isFavorite,
+    ));
 
     notifyListeners();  
   }

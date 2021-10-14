@@ -42,8 +42,9 @@ class Products with ChangeNotifier{
   ];
 
   final String authToken;
+  final String userId;
 
-  Products(this.authToken,this.items);
+  Products(this.authToken,this.userId,this.items);
 
   List<Product> get allItems{
     return [...items];
@@ -69,7 +70,6 @@ class Products with ChangeNotifier{
           'description' : product.description,
           'imageUrl' : product.imageUrl,
           'price' : product.price,
-          'isFavorite' : product.isFavorite,
         }),
       );
       final newProduct = Product(id: json.decode(response.body)['name'], title: product.title, description: product.description, price: product.price, imageUrl: product.imageUrl);
@@ -113,11 +113,15 @@ class Products with ChangeNotifier{
     var params = {
         'auth': authToken,
     };
-    final url = Uri.https('flutter-app-3330c-default-rtdb.firebaseio.com','/products.json',params);
+    var url = Uri.https('flutter-app-3330c-default-rtdb.firebaseio.com','/products.json',params);
 
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      url = Uri.https('flutter-app-3330c-default-rtdb.firebaseio.com','userFavorites/$userId.json',params);
+      final favoriteReponse = await http.get(url);
+      final favoriteData = json.decode(favoriteReponse.body);
+
       final List<Product> loadedProducts = [];
       extractedData.forEach((prodId, prodData) {
         loadedProducts.add(
@@ -127,7 +131,7 @@ class Products with ChangeNotifier{
            description: prodData['description'],
            imageUrl: prodData['imageUrl'],
            price: prodData['price'],
-           isFavorite: prodData['isFavorite']
+           isFavorite: favoriteData == null ? false : favoriteData[prodId] ?? false,
           ));
       });
       items = loadedProducts;
