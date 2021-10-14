@@ -138,8 +138,10 @@ class _AuthCardState extends State<AuthCard> {
         borderRadius: BorderRadius.circular(10.0),
       ),
       elevation: 8.0,
-      child: Container(
-        height: _authMode == AuthMode.signup ? 320 : 260,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeIn,
+        height: _authMode == AuthMode.signup ? 400 : 320,
         constraints:
             BoxConstraints(minHeight: _authMode == AuthMode.signup ? 320 : 260),
         width: deviceSize.width * 0.75,
