@@ -10,6 +10,7 @@ import 'package:flutter_shop_app/screens/orders_screen.dart';
 import 'package:flutter_shop_app/screens/product_detail_page.dart';
 import 'package:flutter_shop_app/screens/product_overview_screen.dart';
 import 'package:flutter_shop_app/screens/user_products_screen.dart';
+import 'package:flutter_shop_app/widgets/custom_route.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -51,6 +52,10 @@ class MyApp extends StatelessWidget {
         title: 'Shop App',
         theme: ThemeData(
           primarySwatch: Colors.blue,
+          pageTransitionsTheme: PageTransitionsTheme(builders: {
+            TargetPlatform.android : CustomPageTransitionBuilder(),
+            TargetPlatform.iOS : CustomPageTransitionBuilder(),
+          })
         ),
         home: auth.isAuth ? ProductOverviewScreen() : AuthScreen(),
         routes: {
